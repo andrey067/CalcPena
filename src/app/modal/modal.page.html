@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Selecione as circunstancias</ion-title>
+    <ion-buttons slot="end" strong=true>
+      <ion-button (click)="closeModal()">Fechar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content>
+  <ion-item>
+    <ion-label> Culpabilidade </ion-label>
+    <ion-checkbox [(ngModel)]="culpabilidade" checked="false" value="1/8"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label> Antecedentes </ion-label>
+    <ion-checkbox [(ngModel)]="antecedentes" checked="false" value="1/8"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label>Conduta social</ion-label>
+    <ion-checkbox [(ngModel)]="condutaSocial " checked="false" value="1/8"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label>Personalidade do agente </ion-label>
+    <ion-checkbox [(ngModel)]="personalidadeAgente" checked="false" value="1/8"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label> Motivos do crime</ion-label>
+    <ion-checkbox [(ngModel)]="motivoCrime" checked="false" value="1/8"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label> Circunstâncias do crime </ion-label>
+    <ion-checkbox [(ngModel)]="circunstanciaCrime" checked="false" value="1/8"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label> Consequências do crime </ion-label>
+    <ion-checkbox [(ngModel)]="consequenciaCrime" checked="false" value="1/8"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label> Comportamento da vítima </ion-label>
+    <ion-checkbox [(ngModel)]="comportamentoVitima" checked="false" value="1/8"></ion-checkbox>
+  </ion-item>
+
+
+
+  <!-- fechar o modal e pegar  -->
+  <ion-button (click)="circunstanciaFunc()">Calular as circunstancias</ion-button>
+
+
+  <ion-label>{{result}}</ion-label>
+
+</ion-content>

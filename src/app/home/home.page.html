@@ -1,44 +1,319 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      Home
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
+<!-- Cabeçario -->
 <ion-content>
-    <ion-card class="welcome-card">
-      <img src="/assets/shapes.svg" alt="" />
-      <ion-card-header>
-        <ion-card-subtitle>Get Started</ion-card-subtitle>
-        <ion-card-title>Welcome to Ionic</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Now that your app has been created, you'll want to start building out features and components. Check out some of the resources below for next steps.</p>
-      </ion-card-content>
-    </ion-card>
-    <ion-list lines="none">
-      <ion-list-header>
-        <ion-label>Resources</ion-label>
-      </ion-list-header>
-      <ion-item href="https://ionicframework.com/docs/">
-        <ion-icon slot="start" color="medium" name="book"></ion-icon>
-        <ion-label>Ionic Documentation</ion-label>
-      </ion-item>
-      <ion-item href="https://ionicframework.com/docs/building/scaffolding">
-        <ion-icon slot="start" color="medium" name="build"></ion-icon>
-        <ion-label>Scaffold Out Your App</ion-label>
-      </ion-item>
-      <ion-item href="https://ionicframework.com/docs/layout/structure">
-        <ion-icon slot="start" color="medium" name="grid"></ion-icon>
-        <ion-label>Change Your App Layout</ion-label>
-      </ion-item>
-      <ion-item href="https://ionicframework.com/docs/theming/basics">
-        <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
-        <ion-label>Theme Your App</ion-label>
-      </ion-item>
-    </ion-list>
+  <ion-header>
+    <ion-toolbar>
+      <ion-card-title>Calculadora de Pena</ion-card-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <!-- Menu slide -->
+
+
+  <ion-card>
+    <ion-card-header color="primary">
+      <ion-card-title>Fases da dosimetria</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-slides pager="false" #slides>
+    <ion-slide>
+      <h1>
+        <ion-toolbar>
+          <ion-title size="large"> Selecione um crime </ion-title>
+        </ion-toolbar>
+
+
+        <div>
+          <ion-select okText="Okay" cancelText="Cancelar" placeholder="Selecione um crime" (ionChange)="crimes()"
+            [(ngModel)]="crime">
+            <ion-select-option *ngFor="let c of leis.default" [value]="c">
+              {{c.numero}} {{c.descricao}}
+            </ion-select-option>
+          </ion-select>
+        </div>
+
+        <div>
+          <ion-item>
+            <ion-segment [(ngModel)]="metodos" (ionChange)="selectMetodo()">
+              <ion-segment-button value="metodoA">
+                <ion-label>Metodo A</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="metodoB">
+                <ion-label>Metodo B</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
+
+        </div>
+
+        <!-- ngSwitch para seleção do metodo  -->
+        <div [ngSwitch]="metodos">
+          <ion-item *ngSwitchCase="'metodoA'">
+            <ion-text>
+              A base de cálculo é a pena minima abstrata
+            </ion-text>
+          </ion-item>
+          <ion-item *ngSwitchCase="'metodoB'">
+            <ion-text>
+              A base de cálculo é o intervalo entre as
+              penas minima e máxima abstratasre
+            </ion-text>
+          </ion-item>
+        </div>
+
+
+
+        <!-- implementar um modal para as cicunstancias -->
+
+        <div>
+          <ion-button expand="center" (click)="showModal()">Há circunstâncias judiciais?
+          </ion-button>
+        </div>
+        <ion-button (click)="calculoPenaBase()">Calcular PenaBase</ion-button>
+
+
+        <div>
+          <ion-item>
+            <ion-label>Resultado da pena base</ion-label>
+            <ion-note slot="end">{{penaBaseResultado}}</ion-note>
+
+          </ion-item>
+
+          <ion-item>
+            <ion-item>
+              <ion-label>MM DD YY</ion-label>
+              <ion-datetime displayFormat="MM DD YY" placeholder="Select Date">{{penaBaseResultado}}</ion-datetime>
+            </ion-item>
+          </ion-item>
+        </div>
+
+        <!-- botão next para a proxima fase -->
+        <ion-button full="clear" (click)="proximoSlide()"> Iniciar o calculo <ion-icon slot="end" name="arrow-forward">
+          </ion-icon>
+        </ion-button>
+
+
+      </h1>
+
+      <!-- Slide 2  -->
+    </ion-slide>
+    <ion-slide>
+      <h2>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Pena Provisoria</ion-title>
+          </ion-toolbar>
+        </ion-header>
+
+        <!--  multiInsidencia Inicio-->
+        <div>
+          <ion-item>
+            <ion-segment [(ngModel)]="multiInsidencia">
+              <ion-text>Há multirreincidência ?</ion-text>
+              <ion-segment-button value="sim">
+                <ion-label>Sim</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="nao">
+                <ion-label>Não</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
+        </div>
+        <div [ngSwitch]="multiInsidencia">
+          <div *ngSwitchCase="'sim'">
+            <ion-item>
+              <ion-label>Aumentar a pena em ?</ion-label>
+              <ion-select [(ngModel)]="multiInsidencia2" interface="popover" multiple="false"
+                placeholder="Selecione uma das opções" (ionChange)="multiInsidenciaFunc()">
+                <ion-select-option value="1/5">1/5</ion-select-option>
+                <ion-select-option value="1/4">1/4</ion-select-option>
+                <ion-select-option value="1/3">1/3</ion-select-option>
+                <ion-select-option value="1/2">1/2</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </div>
+          <div *ngSwitchCase="'nao'"></div>
+        </div>
+        <!-- Fim multiInsidencia -->
+
+        <!-- Agravante Inicio -->
+        <div>
+          <ion-item>
+            <ion-segment [(ngModel)]="agravantes" (ionChange)="agravante()">
+              <ion-text>Há agravantes?</ion-text>
+              <ion-segment-button value="sim">
+                <ion-label>Sim</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="nao">
+                <ion-label>Não</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
+        </div>
+
+        <!-- ng ngSwitch agravantes Qtd -->
+
+        <div [ngSwitch]="agravantes">
+          <ion-item *ngSwitchCase="'sim'">
+            <ion-label position="floating">Quantos?</ion-label>
+            <ion-input [(ngModel)]="agravaneteQtd"></ion-input>
+
+            <!-- fazer um func para apagar a variavel -->
+          </ion-item>
+          <div *ngSwitchCase="'nao'"></div>
+        </div>
+        <!-- Fim ngSwitch agravante Qtd -->
+
+
+        <!-- Atenuantes -->
+
+        <div>
+          <ion-item>
+            <ion-segment [(ngModel)]="atenuantes" (ionChange)="atenuante()">
+              <ion-text>Há atenuantes?</ion-text>
+              <ion-segment-button value="sim">
+                <ion-label>Sim</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="nao">
+                <ion-label>Não</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
+        </div>
+
+        <!-- ng ngSwitch atenuantes Qtd -->
+
+        <div [ngSwitch]="atenuantes">
+          <ion-item *ngSwitchCase="'sim'">
+            <ion-label position="floating">Quantos?</ion-label>
+            <ion-input [(ngModel)]="atenuantesQTD"></ion-input>
+          </ion-item>
+          <!-- fazer um func para apagar a variavel -->
+          <div *ngSwitchCase="'nao'"></div>
+        </div>
+        <!-- Fim ngSwitch atenuantes Qtd -->
+
+
+        <!-- Botao  avancar para a proxima fase-->
+        <ion-button full="clear" (click)="proximoSlide()">Proxima fase<ion-icon slot="end" name="arrow-forward">
+          </ion-icon>
+        </ion-button>
+
+      </h2>
+    </ion-slide>
+
+
+
+    <!-- Slide 3 -->
+    <ion-slide class="slide3">
+      <h3>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Pena provisória</ion-title>
+          </ion-toolbar>
+        </ion-header>
+
+        <div>
+          <ion-item>
+            <ion-segment [(ngModel)]="causaAumento" (ionChante)="causaAumentoFunc()">
+              <ion-text>Há causa de aumento de pena?</ion-text>
+              <ion-segment-button value="sim">
+                <ion-label>Sim</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="nao">
+                <ion-label>Não</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
+        </div>
+
+
+        <!-- ngSwitch aumentoPena -->
+        <div [ngSwitch]="causaAumento">
+          <div *ngSwitchCase="'sim'">
+            <div class="aumento">
+              <ion-item>
+                <ion-label>Aumentar a pena em</ion-label>
+                <ion-select [(ngModel)]="aumentoPena" interface="popover" multiple="false"
+                  placeholder="Selecione uma das opções" (ionChange)="causaAumentoFunc()">
+                  <ion-select-option valeu="1/6">1/6</ion-select-option>
+                  <ion-select-option valeu="1/5">1/5</ion-select-option>
+                  <ion-select-option valeu="1/4">1/4</ion-select-option>
+                  <ion-select-option valeu="1/3">1/3</ion-select-option>
+                  <ion-select-option valeu="1/2">1/2</ion-select-option>
+                  <ion-select-option valeu="1/3">1/3</ion-select-option>
+                  <ion-select-option valeu="1/2">1/2</ion-select-option>
+                  <ion-select-option valeu="2/3">2/3</ion-select-option>
+                  <ion-select-option valeu="3x">3x</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+          </div>
+          <div *ngSwitchCase="'nao'"></div>
+        </div>
+        <!--  -->
+
+
+
+        <div>
+          <ion-item>
+            <ion-segment [(ngModel)]="causaDiminuicao">
+              <ion-text>Há causa de diminuição de pena?</ion-text>
+              <ion-segment-button value="sim">
+                <ion-label>Sim</ion-label>
+              </ion-segment-button>
+              <ion-segment-button value="nao">
+                <ion-label>Não</ion-label>
+              </ion-segment-button>
+            </ion-segment>
+          </ion-item>
+        </div>
+
+        <!-- ngSwitch Diminuicao -->
+
+        <div [ngSwitch]="causaDiminuicao">
+          <div *ngSwitchCase="'sim'">
+            <ion-item>
+              <ion-label>Aumentar a pena em ?</ion-label>
+              <ion-select [(ngModel)]="diminuiPena" interface="popover" multiple="false"
+                placeholder="Selecione uma das opções" (ionChange)="causaDiminuicaoFunc()">
+                <ion-select-option value="1/5">1/5</ion-select-option>
+                <ion-select-option value="1/4">1/4</ion-select-option>
+                <ion-select-option value="1/3">1/3</ion-select-option>
+                <ion-select-option value="1/2">1/2</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </div>
+          <div *ngSwitchCase="'nao'"></div>
+        </div>
+
+
+
+      </h3>
+    </ion-slide>
+
+
+
+
+    <!-- Slide 4 -->
+    <ion-slide>
+
+
+
+      <!-- mostar o resuldo -->
+      <h4>
+
+
+      </h4>
+
+
+    </ion-slide>
+  </ion-slides>
+
+
+
+
+
+
 </ion-content>

@@ -1,4 +1,19 @@
-.welcome-card img {
-  max-height: 35vh;
-  overflow: hidden;
+ion-slide {
+  flex-direction: column;
+} 
+h1{
+  max-width: 100%;
+  margin: 10px auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
+h2{
+  max-width: 100%;
+  margin: 10px auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+
